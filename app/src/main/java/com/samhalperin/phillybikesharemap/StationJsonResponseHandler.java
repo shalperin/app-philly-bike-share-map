@@ -61,11 +61,11 @@ public class StationJsonResponseHandler implements ResponseHandler<Station[]> {
                             docks,
                             status
                     ));
-                } catch (JSONException e) {
+                } catch (JSONException|ClassCastException e) {
                     e.printStackTrace();
                 }
             }
-        } catch (JSONException e) {
+        } catch (JSONException|ClassCastException e) {
             e.printStackTrace();
         }
 
