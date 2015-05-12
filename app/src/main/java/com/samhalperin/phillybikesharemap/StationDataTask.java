@@ -60,13 +60,15 @@ public class StationDataTask extends AsyncTask<String, Void, Station[]> {
                 new Station(MapsActivity.PHILLY,
                         "1234 fake street",
                         20,
-                        30
+                        30,
+                        "Active"
                 ),
                 new Station(
                         new LatLng(39.95378, -75.16374),
                         "1401 JFK debug",
                         30,
-                        40
+                        40,
+                        "Unknown"
                 )
         };
     }

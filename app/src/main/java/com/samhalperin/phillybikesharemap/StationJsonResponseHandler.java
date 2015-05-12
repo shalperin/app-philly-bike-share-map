@@ -30,7 +30,7 @@ public class StationJsonResponseHandler implements ResponseHandler<Station[]> {
     private static final String ADDRESS_STREET_TAG = "addressStreet";
     private static final String BIKES_AVAIALBLE_TAG = "bikesAvailable";
     private static final String DOCKS_AVAIALABLE_TAG = "docksAvailable";
-
+    private static final String KIOSK_PUBLIC_STATUS_TAG ="kioskPublicStatus";
 
     @Override
     public Station[] handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
@@ -41,24 +41,29 @@ public class StationJsonResponseHandler implements ResponseHandler<Station[]> {
 
         try {
             JSONObject responseObject = (JSONObject) new JSONTokener(JSONResponse).nextValue();
-
             JSONArray stations = responseObject.getJSONArray(FEATURES_TAG);
             for(int i = 0; i<stations.length(); i++) {
-                JSONObject station = (JSONObject) stations.get(i);
-                JSONObject properties = station.getJSONObject(PROPERTIES_TAG);
-                int bikes = properties.getInt(BIKES_AVAIALBLE_TAG);
-                int docks = properties.getInt(DOCKS_AVAIALABLE_TAG);
-                String addressStreet = properties.getString(ADDRESS_STREET_TAG);
-                JSONObject geometry = station.getJSONObject(GEOMETRY_TAG);
-                JSONArray coordinates = geometry.getJSONArray(COORDINATES_TAG);
-                double lat = coordinates.getDouble(LAT_INDEX);
-                double lng = coordinates.getDouble(LNG_INDEX);
-                result.add(new Station(
-                        new LatLng(lat, lng),
-                        addressStreet,
-                        bikes,
-                        docks
-                ));
+                try {
+                    JSONObject station = (JSONObject) stations.get(i);
+                    JSONObject properties = station.getJSONObject(PROPERTIES_TAG);
+                    int bikes = properties.getInt(BIKES_AVAIALBLE_TAG);
+                    int docks = properties.getInt(DOCKS_AVAIALABLE_TAG);
+                    String status = properties.getString(KIOSK_PUBLIC_STATUS_TAG);
+                    String addressStreet = properties.getString(ADDRESS_STREET_TAG);
+                    JSONObject geometry = station.getJSONObject(GEOMETRY_TAG);
+                    JSONArray coordinates = geometry.getJSONArray(COORDINATES_TAG);
+                    double lat = coordinates.getDouble(LAT_INDEX);
+                    double lng = coordinates.getDouble(LNG_INDEX);
+                    result.add(new Station(
+                            new LatLng(lat, lng),
+                            addressStreet,
+                            bikes,
+                            docks,
+                            status
+                    ));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
