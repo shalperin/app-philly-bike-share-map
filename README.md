@@ -6,5 +6,5 @@
 I have an Android, and an Indego membership.  Necessity is the mother of invention.
 
 ##License
-Copyright Samuel Halperin, 2015.  You should have received a copy of the MIT Licsense with this code.
+Copyright Samuel Halperin, 2015 except where governed by third party licenses.  All rights reserved.
 
