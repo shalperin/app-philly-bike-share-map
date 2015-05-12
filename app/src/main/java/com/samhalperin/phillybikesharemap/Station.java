@@ -21,7 +21,8 @@ public class Station implements ClusterItem {
         PARTIAL_SERVICE,
         UNAVAILABLE,
         COMING_SOON,
-        UNKNOWN
+        UNKNOWN,
+        DEBUG
     }
 
     private static String ACTIVE_TAG = "Active";
@@ -29,6 +30,8 @@ public class Station implements ClusterItem {
     private static String PARTIAL_SERVICE_TAG = "PartialService"; //guess
     private static String UNAVAILABLE_TAG = "Unavailable";
     private static String COMING_SOON_TAG = "ComingSoon";
+    private static String DEBUG_TAG = "Debug";
+
 
     public Station(LatLng latLng, String addressStreet, int bikesAvailable, int docksAvailable, String status) {
         mLatLng = latLng;
@@ -46,7 +49,10 @@ public class Station implements ClusterItem {
             mStatus = statuses.UNAVAILABLE;
         } else if (status.equals(COMING_SOON_TAG)) {
             mStatus = statuses.COMING_SOON;
-        } else{
+        }else if (status.equals(DEBUG_TAG)) {
+            mStatus = statuses.DEBUG;
+        }
+        else{
             mStatus = statuses.UNKNOWN;
         }
     }
@@ -81,9 +87,9 @@ public class Station implements ClusterItem {
         }  else if (mStatus == Station.statuses.COMING_SOON){
             return "Coming Soon";
         }  else if (mStatus == Station.statuses.UNAVAILABLE){
-            return "Unavailable";
+            return "Kiosk Unavailable";
         }  else {
-            return "Unknown";
+            return "Status Unknown";
         }
     }
 }

@@ -29,11 +29,11 @@ public class StationDataTask extends AsyncTask<String, Void, Station[]> {
     protected Station[] doInBackground(String... params) {
 
         if (DEBUG) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             return debuggingStations();
         } else {
             AndroidHttpClient client = AndroidHttpClient.newInstance("");
@@ -57,19 +57,49 @@ public class StationDataTask extends AsyncTask<String, Void, Station[]> {
 
     private Station[] debuggingStations() {
         return new Station[]  {
+
                 new Station(MapsActivity.PHILLY,
                         "1234 fake street",
                         20,
                         30,
-                        "Active"
+                        "Available"
+                ),
+                new Station(MapsActivity.PHILLY,
+                        "1234 fake street",
+                        20,
+                        30,
+                        "Debug"
                 ),
                 new Station(
                         new LatLng(39.95378, -75.16374),
                         "1401 JFK debug",
                         30,
                         40,
-                        "Unknown"
+                        "ComingSoon"
+                ),
+                new Station(
+                        new LatLng(39.93378, -75.16374),
+                        "5586 unreal street",
+                        30,
+                        40,
+                        "PartialService"
+                ),
+                new Station(
+                        new LatLng(39.91378, -75.16374),
+                        "987 philly street",
+                        30,
+                        40,
+                        "Unavailable"
+                ),
+                new Station(
+                        new LatLng(39.88378, -75.16374),
+                        "987 philly street",
+                        30,
+                        40,
+                        "SpecialEvent"
                 )
+
+
         };
     }
 
