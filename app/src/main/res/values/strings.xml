@@ -3,4 +3,11 @@
     <string name="title_activity_maps">BikeSharePhillyMap</string>
     <string name="api_url">http://api.phila.gov/bike-share-stations/v1</string>
     <string name="refresh">refresh</string>
+    <string name="attribution">Made by</string>
+    <string name="title_activity_attribution">Made by</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="attribution_content">Initial spike\nSam Halperin\n\nContributor\nJohn Merigliano\n\nPhilly Bike Share API\nOpenDataPhilly\n\nIC Launcher icon\nAndroid Asset Studio, Launcher Icon Generator\n\nBicycle icon\nFactorio.us Collective, The Noun Project\n\nMap marker\nBased on a font by fontawesome\n\nSpecial Thanks\nIndy Hall, N3RD street Philadelphia.</string>
+
 </resources>

@@ -3,4 +3,6 @@
 
     <item android:id="@+id/action_refresh" android:title="@string/refresh"
         android:orderInCategory="100" app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_attribution" android:title="@string/attribution"
+        android:orderInCategory="200" app:showAsAction="never" />
 </menu>

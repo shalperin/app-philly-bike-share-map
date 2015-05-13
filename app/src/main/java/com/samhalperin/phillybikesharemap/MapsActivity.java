@@ -1,5 +1,6 @@
 package com.samhalperin.phillybikesharemap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
@@ -63,6 +64,9 @@ public class MapsActivity extends ActionBarActivity implements StationDataTask.S
         if (id == R.id.action_refresh) {
             refreshStationData();
             return true;
+        } else if (id == R.id.action_attribution) {
+            Intent intent = new Intent(this, AttributionActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
