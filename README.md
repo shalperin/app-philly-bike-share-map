@@ -1,5 +1,9 @@
 #Bike Share Philly Map
 
+![Bike Share App](designAssets/bikeshare.png?raw=true)
+
+
+
 "An Android application for checking for available Indego Bike Share bikes and docks."
 
 ##Origin

@@ -1,0 +1,4 @@
+<resources>
+   <!-- look in /src/release/... for the release key. -->
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">AIzaSyB6HxaWcxoriorUEwZ75rq5FDk5F3O5zK4</string>
+</resources>
