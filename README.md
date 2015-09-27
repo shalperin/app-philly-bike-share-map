@@ -1,6 +1,6 @@
 #Bike Share Philly Map
 
-![Bike Share App](designAssets/bikeshare.png?raw=true)
+![Bike Share App](readme-assets/bikeshare.png?raw=true)
 
 
 
