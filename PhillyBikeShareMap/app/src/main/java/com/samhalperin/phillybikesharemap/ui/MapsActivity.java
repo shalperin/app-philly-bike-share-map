@@ -11,15 +11,13 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.samhalperin.phillybikesharemap.BikeShareApplication;
-import com.samhalperin.phillybikesharemap.Constants;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.data.Station;
-import com.samhalperin.phillybikesharemap.data.StationDataTask;
+import com.samhalperin.phillybikesharemap.data.StationTask;
 
-public class MapsActivity extends ActionBarActivity implements StationDataTask.StationDataLoader {
+public class MapsActivity extends ActionBarActivity implements StationTask.StationDataLoader {
     private GoogleMap mMap;
     private ClusterManager<Station> mClusterManager;
     private Tracker mTracker;
@@ -74,14 +72,14 @@ public class MapsActivity extends ActionBarActivity implements StationDataTask.S
     }
 
     private void setUpMap() {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Constants.PHILLY, Constants.DEFAULT_ZOOM_LEVEL));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BikeShareApplication.PHILLY, BikeShareApplication.DEFAULT_ZOOM_LEVEL));
         mMap.setMyLocationEnabled(true);
         setUpClusterer();
         refreshStationData();
     }
 
     private void refreshStationData() {
-        StationDataTask task = new StationDataTask(this);
+        StationTask task = new StationTask(this);
         task.execute(getString(R.string.api_url));
     }
 
@@ -95,7 +93,7 @@ public class MapsActivity extends ActionBarActivity implements StationDataTask.S
         mClusterManager.setRenderer(clusterRenderer);
     }
 
-    // StationDataTask.StationDataLoader interface
+    // StationTask.StationDataLoader interface
     @Override
     public void loadStationData(Station[] stations) {
         mClusterManager.clearItems();

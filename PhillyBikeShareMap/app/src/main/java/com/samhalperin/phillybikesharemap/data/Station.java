@@ -5,6 +5,8 @@ import com.google.maps.android.clustering.ClusterItem;
 
 /**
  * Created by sqh on 5/8/15.
+ *
+ * REFACTOR? This could be rolled into the retrofit POJO at some point.
  */
 public class Station implements ClusterItem {
     private LatLng mLatLng;

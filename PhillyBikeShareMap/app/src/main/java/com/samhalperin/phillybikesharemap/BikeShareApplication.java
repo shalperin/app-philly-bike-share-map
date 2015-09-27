@@ -4,11 +4,16 @@ import android.app.Application;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by sqh on 9/27/15.
  */
 public class BikeShareApplication extends Application {
+    public static final LatLng PHILLY = new LatLng(39.9500, -75.1667);
+    public static final int DEFAULT_ZOOM_LEVEL = 12;
+
+
     private Tracker mTracker;
 
     synchronized public Tracker getDefaultTracker() {
