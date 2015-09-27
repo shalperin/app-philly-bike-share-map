@@ -5,17 +5,30 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.samhalperin.phillybikesharemap.BikeShareApplication;
 import com.samhalperin.phillybikesharemap.R;
 
 
 public class AttributionActivity extends ActionBarActivity {
+    private Tracker mTracker;
+    private static final String SCREEN_NAME = "attribution_activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attribution);
+        BikeShareApplication application = (BikeShareApplication) getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mTracker.setScreenName(SCREEN_NAME);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

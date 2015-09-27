@@ -6,11 +6,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
+import com.samhalperin.phillybikesharemap.BikeShareApplication;
 import com.samhalperin.phillybikesharemap.Constants;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.data.Station;
@@ -19,12 +22,16 @@ import com.samhalperin.phillybikesharemap.data.StationDataTask;
 public class MapsActivity extends ActionBarActivity implements StationDataTask.StationDataLoader {
     private GoogleMap mMap;
     private ClusterManager<Station> mClusterManager;
+    private Tracker mTracker;
+    private static final String SCREEN_NAME = "map_activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+        BikeShareApplication application = (BikeShareApplication) getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
     @Override
@@ -52,6 +59,8 @@ public class MapsActivity extends ActionBarActivity implements StationDataTask.S
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        mTracker.setScreenName(SCREEN_NAME);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
       private void setUpMapIfNeeded() {
