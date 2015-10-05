@@ -102,7 +102,7 @@ public class StationTask extends AsyncTask<String, Void, Station[]> {
 
     @Override
     protected void onPostExecute(Station[] stations) {
-        mHandler.loadStationData(stations);
+       // mHandler.loadStationData(stations);
     }
 
     public interface StationDataLoader{
