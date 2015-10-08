@@ -13,28 +13,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.samhalperin.phillybikesharemap.BikeShareApplication;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.data.Station;
-import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.Feature;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.Geometry;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.Properties;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class MapsActivity extends ActionBarActivity implements Observer<Station[]>, OnMapReadyCallback {
+public class MapsActivity extends ActionBarActivity implements Observer<Station>, OnMapReadyCallback {
     private GoogleMap mMap;
     private ClusterManager<Station> mClusterManager;
     private Tracker mTracker;
@@ -53,15 +41,12 @@ public class MapsActivity extends ActionBarActivity implements Observer<Station[
         mTracker = application.getDefaultTracker();
     }
 
-    public void onNext(Station[] stations) {
-        mClusterManager.clearItems();
-        for (Station s : stations) {
-            mClusterManager.addItem(s);
-        }
-        mClusterManager.cluster();
+    public void onNext(Station station) {
+        mClusterManager.addItem(station);
     }
 
     public void onCompleted() {
+        mClusterManager.cluster();
     }
 
     public void onError(Throwable error) {
