@@ -28,15 +28,14 @@ public class MapsActivity extends ActionBarActivity implements Observer<Station>
     private Tracker mTracker;
     private static final String SCREEN_NAME = "map_activity";
     private Subscription subscription;
-
+    private SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
         BikeShareApplication application = (BikeShareApplication) getApplication();
         mTracker = application.getDefaultTracker();
     }
@@ -88,6 +87,8 @@ public class MapsActivity extends ActionBarActivity implements Observer<Station>
         super.onResume();
         mTracker.setScreenName(SCREEN_NAME);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mapFragment.getMapAsync(this);
+
     }
 
 
