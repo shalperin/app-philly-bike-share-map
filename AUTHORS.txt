@@ -1,0 +1,6 @@
+Philly Bike Share Map for Android was written by
++ Sam Halperin (code)
++ John Merigliano (custom map markers)
+
+We are always looking for co-conspirators so get in touch!
+

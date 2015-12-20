@@ -9,6 +9,4 @@
 ##Origin
 I have an Android, and an Indego membership.  Necessity is the mother of invention.
 
-##License
-Copyright Samuel Halperin, 2015 except where governed by third party licenses.  All rights reserved.
-
+[![Google Play](readme-assets/google_play.png?raw=true)](https://play.google.com/store/apps/details?id=com.samhalperin.phillybikesharemap)
