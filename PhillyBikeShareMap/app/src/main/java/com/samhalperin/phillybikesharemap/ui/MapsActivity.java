@@ -2,7 +2,10 @@ package com.samhalperin.phillybikesharemap.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -29,11 +32,18 @@ public class MapsActivity extends ActionBarActivity implements Observer<Station>
     private static final String SCREEN_NAME = "map_activity";
     private Subscription subscription;
     private SupportMapFragment mapFragment;
+    private static final String TAG = "MapsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayShowTitleEnabled(false);
+        ab.setIcon(R.mipmap.ab_icon);
+
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         BikeShareApplication application = (BikeShareApplication) getApplication();
@@ -78,6 +88,9 @@ public class MapsActivity extends ActionBarActivity implements Observer<Station>
                 Intent intent = new Intent(this, AttributionActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.action_favorites:
+                Intent intent2 = new Intent(this, FavoritesActivity.class);
+                startActivity(intent2);
         }
         return super.onOptionsItemSelected(item);
     }

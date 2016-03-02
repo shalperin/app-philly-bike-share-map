@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.samhalperin.phillybikesharemap" >
+    package="com.samhalperin.phillybikesharemap">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,15 +15,15 @@
         android:required="true" />
 
     <application
+        android:name=".BikeShareApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".BikeShareApplication"
-        >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MapsActivity"
-            android:label="@string/title_activity_maps" >
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,8 +40,12 @@
 
         <activity
             android:name=".ui.AttributionActivity"
-            android:label="@string/title_activity_attribution" >
-        </activity>
+            android:label="@string/title_activity_attribution"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
+        <activity android:name=".ui.FavoritesActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
     </application>
 
 </manifest>
