@@ -60,6 +60,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         mMap = map;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BikeShareApplication.PHILLY, BikeShareApplication.DEFAULT_ZOOM_LEVEL));
         mMap.setMyLocationEnabled(true);
+        mMap.setInfoWindowAdapter(new MyInfoWindowAdapter(this));
         setUpClusterer();
     }
 

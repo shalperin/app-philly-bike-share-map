@@ -8,15 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.samhalperin.phillybikesharemap.FavoritesAdapter;
 import com.samhalperin.phillybikesharemap.FavoritesModel;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
-import com.samhalperin.phillybikesharemap.retrofit.Station;
 import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
 
 import retrofit2.Call;

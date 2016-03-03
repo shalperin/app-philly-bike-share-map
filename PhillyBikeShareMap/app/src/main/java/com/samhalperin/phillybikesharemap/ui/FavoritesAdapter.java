@@ -1,4 +1,4 @@
-package com.samhalperin.phillybikesharemap;
+package com.samhalperin.phillybikesharemap.ui;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.samhalperin.phillybikesharemap.FavoritesModel;
+import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.Station;
 
 import java.util.Map;
@@ -53,10 +55,12 @@ public class FavoritesAdapter extends BaseAdapter  {
             convertView = inflater.inflate(R.layout.favorite_list_item, parent, false);
         }
         Station station = (Station)getItem(position);
-        TextView address = (TextView) convertView.findViewById(R.id.address_street);
-        TextView info = (TextView) convertView.findViewById(R.id.info);
-        address.setText(station.getStreet());
-        info.setText(station.getInfo());
+        if (station != null) {
+            TextView address = (TextView) convertView.findViewById(R.id.address_street);
+            TextView info = (TextView) convertView.findViewById(R.id.info);
+            address.setText(station.getStreet());
+            info.setText(station.getInfo());
+        }
 
         return convertView;
     }
