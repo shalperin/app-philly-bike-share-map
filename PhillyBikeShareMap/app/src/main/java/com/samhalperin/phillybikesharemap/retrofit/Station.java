@@ -1,4 +1,4 @@
-package com.samhalperin.phillybikesharemap.data;
+package com.samhalperin.phillybikesharemap.retrofit;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
@@ -16,6 +16,7 @@ public class Station implements ClusterItem {
     private statuses mStatus;
     private static final int LAT_INDEX = 1;
     private static final int LNG_INDEX = 0;
+    private String mId;
 
     public enum statuses {
         ACTIVE,
@@ -35,7 +36,8 @@ public class Station implements ClusterItem {
     private static String DEBUG_TAG = "Debug";
 
 
-    public Station(LatLng latLng, String addressStreet, int bikesAvailable, int docksAvailable, String status) {
+    public Station(LatLng latLng, String addressStreet, int bikesAvailable, int docksAvailable,
+                   String status, String id) {
         mLatLng = latLng;
         mAddressStreet = addressStreet;
         mBikesAvailable = bikesAvailable;
@@ -57,6 +59,8 @@ public class Station implements ClusterItem {
         else{
             mStatus = statuses.UNKNOWN;
         }
+
+        mId = id;
     }
 
     public LatLng getPosition() {
@@ -95,5 +99,8 @@ public class Station implements ClusterItem {
         }
     }
 
+    public String getId() {
+        return mId;
+    }
 
 }

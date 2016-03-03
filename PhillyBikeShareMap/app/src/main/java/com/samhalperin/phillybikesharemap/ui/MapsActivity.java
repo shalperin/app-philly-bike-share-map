@@ -19,7 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.clustering.ClusterManager;
 import com.samhalperin.phillybikesharemap.BikeShareApplication;
 import com.samhalperin.phillybikesharemap.R;
-import com.samhalperin.phillybikesharemap.data.Station;
+import com.samhalperin.phillybikesharemap.retrofit.Station;
 import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
 import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
 
@@ -120,7 +120,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             public void onResponse(Call<BikeData> call, Response<BikeData> response) {
                 try {
                     BikeData data = response.body();
-                    Station[] stations = data.toStationArray();
+                    Station[] stations = data.asArray();
                     for(Station station : stations) {
                         if (mClusterManager != null) {
                             mClusterManager.addItem(station);

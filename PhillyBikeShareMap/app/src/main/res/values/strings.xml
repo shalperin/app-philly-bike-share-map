@@ -11,6 +11,7 @@
     <string name="attribution_content">Initial spike\nSam Halperin\n\nContributor\nJohn Merigliano\n\nPhilly Bike Share API\nOpenDataPhilly\n\nIC Launcher icon\nAndroid Asset Studio, Launcher Icon Generator\n\nBicycle icon\nFactorio.us Collective, The Noun Project\n\nMap marker\nBased on a font by fontawesome\n\nSpecial Thanks\nIndy Hall, N3RD street Philadelphia.</string>
     <string name="favorites">FAVORITES</string>
     <string name="map">MAP</string>
-
+    <string name="preference_file_key">bike_favorites</string>
+    <string name="favorites_pref">favorites_pref</string>
 
 </resources>

@@ -5,15 +5,6 @@ import android.app.Application;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.model.LatLng;
-import com.samhalperin.phillybikesharemap.data.Station;
-import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.Feature;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.Geometry;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.Properties;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

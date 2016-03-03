@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.samhalperin.phillybikesharemap.R;
-import com.samhalperin.phillybikesharemap.data.Station;
+import com.samhalperin.phillybikesharemap.retrofit.Station;
 
 /**
  * Created by sqh on 5/6/15.
