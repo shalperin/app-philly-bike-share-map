@@ -33,18 +33,23 @@ public class FavoritesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Intent intent;
         switch (id) {
             case R.id.action_refresh:
-                //TODO refreshStationData();
+                fetchData();
                 return true;
             case R.id.action_attribution:
-                Intent intent = new Intent(this, AttributionActivity.class);
+                intent = new Intent(this, AttributionActivity.class);
                 startActivity(intent);
                 break;
             case R.id.action_map:
-                Intent intent2 = new Intent(this, MapsActivity.class);
-                startActivity(intent2);
+                intent = new Intent(this, MapsActivity.class);
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void fetchData() {
+
     }
 }

@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -20,19 +20,21 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.samhalperin.phillybikesharemap.BikeShareApplication;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.data.Station;
-import rx.Observer;
-import rx.Subscription;
-import rx.schedulers.Schedulers;
-import rx.android.schedulers.AndroidSchedulers;
+import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
+import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
 
-public class MapsActivity extends ActionBarActivity implements Observer<Station>, OnMapReadyCallback {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback {
+    private static final String TAG = "MapsActivity";
     private GoogleMap mMap;
     private ClusterManager<Station> mClusterManager;
     private Tracker mTracker;
     private static final String SCREEN_NAME = "map_activity";
-    private Subscription subscription;
     private SupportMapFragment mapFragment;
-    private static final String TAG = "MapsActivity";
+    private BikeClient.Endpoints api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class MapsActivity extends ActionBarActivity implements Observer<Station>
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowTitleEnabled(false);
         ab.setIcon(R.mipmap.ab_icon);
+        api = BikeClient.getApi();
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -50,25 +53,11 @@ public class MapsActivity extends ActionBarActivity implements Observer<Station>
         mTracker = application.getDefaultTracker();
     }
 
-    public void onNext(Station station) {
-        mClusterManager.addItem(station);
-    }
-
-    public void onCompleted() {
-        mClusterManager.cluster();
-    }
-
-    public void onError(Throwable error) {
-        error.printStackTrace();
-        Toast.makeText(this, "Hello, Bike Share API?  This is Android calling... heh.. they hung up.", Toast.LENGTH_LONG).show();
-    }
-
     public void onMapReady(GoogleMap map) {
         mMap = map;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BikeShareApplication.PHILLY, BikeShareApplication.DEFAULT_ZOOM_LEVEL));
         mMap.setMyLocationEnabled(true);
         setUpClusterer();
-        subscription = ((BikeShareApplication)getApplication()).getStationObservable().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
     }
 
     @Override
@@ -80,17 +69,18 @@ public class MapsActivity extends ActionBarActivity implements Observer<Station>
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Intent intent;
         switch (id) {
             case R.id.action_refresh:
-                //TODO refreshStationData();
+                fetchData();
                 return true;
             case R.id.action_attribution:
-                Intent intent = new Intent(this, AttributionActivity.class);
+                intent = new Intent(this, AttributionActivity.class);
                 startActivity(intent);
                 break;
             case R.id.action_favorites:
-                Intent intent2 = new Intent(this, FavoritesActivity.class);
-                startActivity(intent2);
+                intent = new Intent(this, FavoritesActivity.class);
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -111,11 +101,45 @@ public class MapsActivity extends ActionBarActivity implements Observer<Station>
         mMap.setOnMarkerClickListener(mClusterManager);
         StationClusterRenderer clusterRenderer = new StationClusterRenderer(this, mMap, mClusterManager);
         mClusterManager.setRenderer(clusterRenderer);
+        fetchData();
     }
 
     @Override
     protected void onDestroy() {
-        subscription.unsubscribe();
         super.onDestroy();
+    }
+
+    private void fetchData() {
+        if (mClusterManager == null) {
+            return;
+        }
+        mClusterManager.clearItems();
+        Call<BikeData> call = api.getBikeData();
+        call.enqueue(new Callback<BikeData>() {
+            @Override
+            public void onResponse(Call<BikeData> call, Response<BikeData> response) {
+                try {
+                    BikeData data = response.body();
+                    Station[] stations = data.toStationArray();
+                    for(Station station : stations) {
+                        if (mClusterManager != null) {
+                            mClusterManager.addItem(station);
+                        }
+                    }
+                    mClusterManager.cluster();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(MapsActivity.this, "Ooops, sorry! Parse error.", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<BikeData> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(MapsActivity.this, "Ooops, sorry! Network error", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

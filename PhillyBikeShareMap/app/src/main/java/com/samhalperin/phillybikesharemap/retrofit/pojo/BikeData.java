@@ -5,14 +5,18 @@ package com.samhalperin.phillybikesharemap.retrofit.pojo;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Generated;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.samhalperin.phillybikesharemap.data.Station;
 
-import rx.Observable;
-import rx.functions.Func1;
 
 @Generated("org.jsonschema2pojo")
 public class BikeData {
+    private static final int LAT_INDEX = 1;
+    private static final int LNG_INDEX = 0;
+
 
     @SerializedName("features")
     @Expose
@@ -32,12 +36,23 @@ public class BikeData {
         this.features = features;
     }
 
-    public static final Func1<BikeData, Observable<Feature>> GET_FEATURES =
-            new Func1<BikeData, Observable<Feature>>() {
-                @Override
-                public Observable call(BikeData bikeData) {
-                    List<Feature> features = bikeData.getFeatures();
-                    return Observable.from(features.toArray(new Feature[features.size()]));
-                }};
+    public Station[] toStationArray() {
+        List<Station> S = new ArrayList<Station>();
+        for (Feature f : getFeatures()) {
+            Properties p = f.getProperties();
+            Geometry g = f.getGeometry();
+            Station s = new Station(
+                    new LatLng(
+                            g.getCoordinates().get(LAT_INDEX),
+                            g.getCoordinates().get(LNG_INDEX)),
+                    p.getAddressStreet(),
+                    p.getBikesAvailable(),
+                    p.getDocksAvailable(),
+                    p.getKioskPublicStatus()
+            );
+            S.add(s);
+        }
+        return S.toArray(new Station[S.size()]);
+    }
 
 }

@@ -2,13 +2,6 @@ package com.samhalperin.phillybikesharemap.data;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.Feature;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.Geometry;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.Properties;
-
-import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * Created by sqh on 5/8/15.
@@ -102,23 +95,5 @@ public class Station implements ClusterItem {
         }
     }
 
-    public static final Func1<Feature, Station> CREATE =
-            new Func1<Feature, Station>() {
-               @Override
-               public Station call(Feature f) {
-                   Properties p = f.getProperties();
-                   Geometry g = f.getGeometry();
-                   Station s = new Station(  //refactor - build this into the POJO.
-                           new LatLng(
-                                   g.getCoordinates().get(LAT_INDEX),
-                                   g.getCoordinates().get(LNG_INDEX)),
-                           p.getAddressStreet(),
-                           p.getBikesAvailable(),
-                           p.getDocksAvailable(),
-                           p.getKioskPublicStatus()
-                   );
-                   return s;
-               }
-            };
 
 }
