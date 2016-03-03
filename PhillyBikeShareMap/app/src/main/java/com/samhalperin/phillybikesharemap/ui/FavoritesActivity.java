@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -42,6 +43,10 @@ public class FavoritesActivity extends AppCompatActivity {
         lv = (ListView)findViewById(R.id.favorites_lv);
         lv.setEmptyView(findViewById(R.id.empty_view));
         fetchData();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(null);
+
+
     }
 
     @Override
@@ -70,6 +75,7 @@ public class FavoritesActivity extends AppCompatActivity {
     }
 
     private void fetchData() {
+        findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
         Call<BikeData> call = api.getBikeData();
         call.enqueue(new Callback<BikeData>() {
             @Override
@@ -82,10 +88,12 @@ public class FavoritesActivity extends AppCompatActivity {
                     FavoritesAdapter adapter = new FavoritesAdapter(FavoritesActivity.this,
                             model, data.asMap());
                     lv.setAdapter(adapter);
+                    findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(FavoritesActivity.this, "Ooops, sorry! Parse error.", Toast.LENGTH_LONG).show();
+                    findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
                 }
             }
 

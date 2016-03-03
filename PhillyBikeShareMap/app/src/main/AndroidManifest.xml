@@ -41,11 +41,20 @@
         <activity
             android:name=".ui.AttributionActivity"
             android:label="@string/title_activity_attribution"
-            android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.MapsActivity" />
+            </activity>
         <activity android:name=".ui.FavoritesActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MapsActivity" />
+            >
+
+        </activity>
     </application>
 
 </manifest>

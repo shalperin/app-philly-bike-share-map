@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 
@@ -51,6 +52,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         BikeShareApplication application = (BikeShareApplication) getApplication();
         mTracker = application.getDefaultTracker();
+
+
     }
 
     public void onMapReady(GoogleMap map) {
@@ -65,6 +68,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,6 +118,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             return;
         }
         mClusterManager.clearItems();
+        findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
         Call<BikeData> call = api.getBikeData();
         call.enqueue(new Callback<BikeData>() {
             @Override
@@ -127,6 +132,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                         }
                     }
                     mClusterManager.cluster();
+                    findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(MapsActivity.this, "Ooops, sorry! Parse error.", Toast.LENGTH_LONG).show();
@@ -138,6 +144,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             public void onFailure(Call<BikeData> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(MapsActivity.this, "Ooops, sorry! Network error", Toast.LENGTH_LONG).show();
+                findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
             }
         });
 

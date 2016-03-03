@@ -27,8 +27,8 @@ public class FavoritesModel {
         cache = prefs.getStringSet(context.getString(R.string.favorites_pref), new HashSet<String>());
 
         //debug TODO remove
-        addKioskId("3004");
-        //deleteKioskId("3004");
+        //addKioskId("3004");
+        deleteKioskId("3004");
     }
 
     public Set<String> getKioskIds() {
