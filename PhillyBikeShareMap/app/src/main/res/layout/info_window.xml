@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tap anywhere to favorite."
+            android:text="Tap anywhere to add/remove favorite."
             android:textSize="10dp"
             android:textStyle="italic"
             />

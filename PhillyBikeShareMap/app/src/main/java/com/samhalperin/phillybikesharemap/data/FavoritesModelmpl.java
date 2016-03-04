@@ -30,10 +30,7 @@ public class FavoritesModelmpl implements FavoritesModel {
         cache = prefs.getStringSet(context.getString(R.string.favorites_pref), new HashSet<String>());
     }
 
-    public Set<String> getKioskIds() {
-        return cache;
-    }
-
+    @Override
     public void addKioskId(String id) {
         cache.add(id);
         Set s = prefs.getStringSet(context.getString(R.string.favorites_pref), new HashSet<String>());
@@ -42,10 +39,12 @@ public class FavoritesModelmpl implements FavoritesModel {
 
     }
 
+    @Override
     public boolean hasKioskId(String id) {
         return cache.contains(id);
     }
 
+    @Override
     public void deleteKioskId(String id) {
         cache.remove(id);
         Set s = prefs.getStringSet(context.getString(R.string.favorites_pref), new HashSet<String>());
@@ -53,14 +52,17 @@ public class FavoritesModelmpl implements FavoritesModel {
         prefs.edit().putStringSet(context.getString(R.string.favorites_pref),s).apply();
     }
 
+    @Override
     public boolean isEmpty() {
         return cache.isEmpty();
     }
 
+    @Override
     public int getCount() {
         return cache.size();
     }
 
+    @Override
     public String getPosition(int i) {
         //TODO
         // noooo.....

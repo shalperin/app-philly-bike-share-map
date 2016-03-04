@@ -20,6 +20,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.samhalperin.phillybikesharemap.BikeShareApplication;
+import com.samhalperin.phillybikesharemap.data.FavoritesModel;
+import com.samhalperin.phillybikesharemap.data.FavoritesModelDBImpl;
 import com.samhalperin.phillybikesharemap.data.FavoritesModelmpl;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.Station;
@@ -38,7 +40,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     private static final String SCREEN_NAME = "map_activity";
     private SupportMapFragment mapFragment;
     private BikeClient.Endpoints api;
-    private FavoritesModelmpl favoritesModel;
+    private FavoritesModel favoritesModel;
     StationClusterRenderer clusterRenderer;
 
     @Override
@@ -52,7 +54,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         ab.setIcon(R.mipmap.ab_icon);
         api = BikeClient.getApi();
 
-        favoritesModel = new FavoritesModelmpl(this);
+        favoritesModel = new FavoritesModelDBImpl(this);
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

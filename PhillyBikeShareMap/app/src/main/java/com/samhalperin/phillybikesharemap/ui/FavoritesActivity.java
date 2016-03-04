@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.samhalperin.phillybikesharemap.data.FavoritesModel;
+import com.samhalperin.phillybikesharemap.data.FavoritesModelDBImpl;
 import com.samhalperin.phillybikesharemap.data.FavoritesModelmpl;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
@@ -24,7 +26,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
     ListView lv;
     private BikeClient.Endpoints api;
-    FavoritesModelmpl model;
+    FavoritesModel model;
     FavoritesAdapter adapter;
 
     @Override
@@ -37,7 +39,7 @@ public class FavoritesActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowTitleEnabled(false);
         ab.setIcon(R.mipmap.ab_icon);
-        model = new FavoritesModelmpl(this);
+        model = new FavoritesModelDBImpl(this);
         lv = (ListView)findViewById(R.id.favorites_lv);
         lv.setEmptyView(findViewById(R.id.empty_view));
         fetchData();

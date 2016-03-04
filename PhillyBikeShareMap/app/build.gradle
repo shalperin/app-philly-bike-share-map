@@ -19,6 +19,11 @@ android {
     productFlavors {
     }
     apply plugin: 'com.google.gms.google-services'
+
+    //TODO if I really wanted to do this right I'd figure out an ARM build variant.
+    packagingOptions {
+        exclude "lib/arm64-v8a/librealm-jni.so"
+    }
 }
 
 dependencies {
@@ -36,5 +41,7 @@ dependencies {
     compile 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
+
+    compile 'io.realm:realm-android:0.87.5'
 
 }

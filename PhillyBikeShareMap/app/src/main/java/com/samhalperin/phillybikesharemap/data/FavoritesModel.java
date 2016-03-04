@@ -14,8 +14,6 @@ import java.util.Set;
  */
 public interface FavoritesModel {
 
-    Set<String> getKioskIds();
-
     void addKioskId(String id);
 
     boolean hasKioskId(String id);
