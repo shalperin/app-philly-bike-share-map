@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.samhalperin.phillybikesharemap.FavoritesModel;
+import com.samhalperin.phillybikesharemap.data.FavoritesModelmpl;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.Station;
 
@@ -18,10 +18,10 @@ import java.util.Map;
  */
 public class FavoritesAdapter extends BaseAdapter  {
     Map<String, Station> stations;
-    FavoritesModel model;
+    FavoritesModelmpl model;
     private Activity context;
 
-    public FavoritesAdapter(Activity context, FavoritesModel model, Map<String, Station> stations) {
+    public FavoritesAdapter(Activity context, FavoritesModelmpl model, Map<String, Station> stations) {
         this.model = model;
         this.context = context;
         this.stations = stations;
@@ -35,7 +35,12 @@ public class FavoritesAdapter extends BaseAdapter  {
     @Override
     public Object getItem(int position) {
         String id = model.getPosition(position);
-        return stations.get(id);
+        try {
+            return stations.get(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -62,6 +67,8 @@ public class FavoritesAdapter extends BaseAdapter  {
             info.setText(station.getInfo());
         }
 
+
+
         return convertView;
     }
 
@@ -78,5 +85,14 @@ public class FavoritesAdapter extends BaseAdapter  {
     @Override
     public boolean isEmpty() {
         return getCount() == 0;
+    }
+
+    public void remove(int position) {
+        String id = model.getPosition(position);
+        try {
+            model.deleteKioskId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

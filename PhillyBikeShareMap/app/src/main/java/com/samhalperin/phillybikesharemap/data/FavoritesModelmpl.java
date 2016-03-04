@@ -1,7 +1,10 @@
-package com.samhalperin.phillybikesharemap;
+package com.samhalperin.phillybikesharemap.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.samhalperin.phillybikesharemap.R;
+import com.samhalperin.phillybikesharemap.data.FavoritesModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,23 +15,19 @@ import java.util.Set;
 /**
  * Created by sqh on 3/2/16.
  */
-public class FavoritesModel {
+public class FavoritesModelmpl implements FavoritesModel {
     private Context context;
 
     private Set<String> cache;
     private SharedPreferences prefs;
 
-    public FavoritesModel(Context context) {
+    public FavoritesModelmpl(Context context) {
         this.context = context;
         //init cache
         prefs = context.getSharedPreferences(
                 context.getString(R.string.preference_file_key),
                 context.MODE_PRIVATE);
         cache = prefs.getStringSet(context.getString(R.string.favorites_pref), new HashSet<String>());
-
-        //debug TODO remove
-        //addKioskId("3004");
-        deleteKioskId("3004");
     }
 
     public Set<String> getKioskIds() {
@@ -39,15 +38,19 @@ public class FavoritesModel {
         cache.add(id);
         Set s = prefs.getStringSet(context.getString(R.string.favorites_pref), new HashSet<String>());
         s.add(id);
-        prefs.edit().putStringSet(context.getString(R.string.favorites_pref), s).commit();
+        prefs.edit().putStringSet(context.getString(R.string.favorites_pref), s).apply();
 
+    }
+
+    public boolean hasKioskId(String id) {
+        return cache.contains(id);
     }
 
     public void deleteKioskId(String id) {
         cache.remove(id);
         Set s = prefs.getStringSet(context.getString(R.string.favorites_pref), new HashSet<String>());
         s.remove(id);
-        prefs.edit().putStringSet(context.getString(R.string.favorites_pref),s).commit();
+        prefs.edit().putStringSet(context.getString(R.string.favorites_pref),s).apply();
     }
 
     public boolean isEmpty() {

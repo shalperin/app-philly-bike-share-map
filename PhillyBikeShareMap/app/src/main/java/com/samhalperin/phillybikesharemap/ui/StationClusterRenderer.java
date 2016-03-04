@@ -5,11 +5,15 @@ import android.content.Context;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.Station;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sqh on 5/6/15.
@@ -30,11 +34,16 @@ public class StationClusterRenderer extends DefaultClusterRenderer<Station> {
 
 
     private static BitmapDescriptor DEBUG_MARKER = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN);
-
+    private HashMap<String, String> markerIdMap;
 
     public StationClusterRenderer(Context context, GoogleMap map,
                                   ClusterManager<Station> clusterManager) {
         super(context, map, clusterManager);
+        markerIdMap = new HashMap<String, String>();
+    }
+
+    public Map<String, String> getMarkerIdMap() {
+        return markerIdMap;
     }
 
     @Override
@@ -59,8 +68,14 @@ public class StationClusterRenderer extends DefaultClusterRenderer<Station> {
             markerOptions.icon(UNAVAILABLE_MARKER_CUSTOM);
         }
 
+
         super.onBeforeClusterItemRendered(station, markerOptions);
     }
 
 
+    @Override
+    protected void onClusterItemRendered(Station clusterItem, Marker marker) {
+        super.onClusterItemRendered(clusterItem, marker);
+        markerIdMap.put(marker.getId(), clusterItem.getId());
+    }
 }

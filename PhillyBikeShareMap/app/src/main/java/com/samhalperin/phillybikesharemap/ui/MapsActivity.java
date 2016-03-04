@@ -17,8 +17,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.samhalperin.phillybikesharemap.BikeShareApplication;
+import com.samhalperin.phillybikesharemap.data.FavoritesModelmpl;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.Station;
 import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
@@ -36,6 +38,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     private static final String SCREEN_NAME = "map_activity";
     private SupportMapFragment mapFragment;
     private BikeClient.Endpoints api;
+    private FavoritesModelmpl favoritesModel;
+    StationClusterRenderer clusterRenderer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         ab.setIcon(R.mipmap.ab_icon);
         api = BikeClient.getApi();
 
+        favoritesModel = new FavoritesModelmpl(this);
+
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         BikeShareApplication application = (BikeShareApplication) getApplication();
@@ -56,13 +62,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     }
 
+    @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BikeShareApplication.PHILLY, BikeShareApplication.DEFAULT_ZOOM_LEVEL));
         mMap.setMyLocationEnabled(true);
         mMap.setInfoWindowAdapter(new MyInfoWindowAdapter(this));
+        mMap.setOnInfoWindowClickListener(infoWindowClickListener);
         setUpClusterer();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,7 +113,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         mClusterManager = new ClusterManager<>(this, mMap);
         mMap.setOnCameraChangeListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
-        StationClusterRenderer clusterRenderer = new StationClusterRenderer(this, mMap, mClusterManager);
+        clusterRenderer = new StationClusterRenderer(this, mMap, mClusterManager);
         mClusterManager.setRenderer(clusterRenderer);
         fetchData();
     }
@@ -148,6 +157,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                 findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
             }
         });
-
     }
+
+    private GoogleMap.OnInfoWindowClickListener infoWindowClickListener = new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker m) {
+            String id =clusterRenderer.getMarkerIdMap().get(m.getId());
+            if (favoritesModel.hasKioskId(id)) {
+                favoritesModel.deleteKioskId(id);
+                Toast.makeText(MapsActivity.this, m.getTitle() + " removed from favorites.", Toast.LENGTH_LONG).show();
+            } else {
+                favoritesModel.addKioskId(id);
+                Toast.makeText(MapsActivity.this, m.getTitle() + " favorited!", Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 }

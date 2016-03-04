@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.samhalperin.phillybikesharemap.FavoritesModel;
+import com.samhalperin.phillybikesharemap.data.FavoritesModelmpl;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
 import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
@@ -24,7 +24,8 @@ public class FavoritesActivity extends AppCompatActivity {
 
     ListView lv;
     private BikeClient.Endpoints api;
-    FavoritesModel model;
+    FavoritesModelmpl model;
+    FavoritesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class FavoritesActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowTitleEnabled(false);
         ab.setIcon(R.mipmap.ab_icon);
-        model = new FavoritesModel(this);
+        model = new FavoritesModelmpl(this);
         lv = (ListView)findViewById(R.id.favorites_lv);
         lv.setEmptyView(findViewById(R.id.empty_view));
         fetchData();
@@ -82,10 +83,11 @@ public class FavoritesActivity extends AppCompatActivity {
                     // I am conflicted about blowing away the adapter here and recreating
                     // it, but I definitely don't want to init it with null for the Stations
                     // Map.
-                    FavoritesAdapter adapter = new FavoritesAdapter(FavoritesActivity.this,
+                    adapter = new FavoritesAdapter(FavoritesActivity.this,
                             model, data.asMap());
                     lv.setAdapter(adapter);
                     findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
+                    bindSwipeListener();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -100,5 +102,30 @@ public class FavoritesActivity extends AppCompatActivity {
                 Toast.makeText(FavoritesActivity.this, "Ooops, sorry! Network error", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    //https://github.com/romannurik/Android-SwipeToDismiss/blob/master/src/com/example/android/swipedismiss/MainActivity.java
+    private void bindSwipeListener() {
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        lv,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    adapter.remove(position);
+                                }
+                                adapter.notifyDataSetChanged();
+                                Toast.makeText(FavoritesActivity.this, "Favorite deleted", Toast.LENGTH_LONG).show();
+                            }
+                        });
+        lv.setOnTouchListener(touchListener);
+        lv.setOnScrollListener(touchListener.makeScrollListener());
+
     }
 }
