@@ -53,7 +53,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MapsActivity" />
             >
-
+        </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_attribution"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

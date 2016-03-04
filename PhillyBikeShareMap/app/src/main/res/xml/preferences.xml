@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="@string/pref_startup_mode"
+        android:title="Startup mode"
+        android:dialogTitle="Would you like the app to start with the map screen or the favorites?"
+        android:entries="@array/startup_mode"
+        android:entryValues="@array/startup_values"
+        android:defaultValue="map" />
+</PreferenceScreen>

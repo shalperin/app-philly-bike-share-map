@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="startup_mode">
+        <item>Start with map</item>
+        <item>Start with favorites</item>
+    </string-array>
+    <string-array name="startup_values">
+        <item>map</item>
+        <item>favorites</item>
+    </string-array>
+
+</resources>

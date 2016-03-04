@@ -7,4 +7,6 @@
         android:orderInCategory="100" app:showAsAction="ifRoom" android:icon="@drawable/refresh" />
     <item android:id="@+id/action_attribution" android:title="@string/attribution"
         android:orderInCategory="200" app:showAsAction="never" />
+    <item android:id="@+id/action_settings" android:title="@string/settings"
+        android:orderInCategory="210" app:showAsAction="never" />
 </menu>
