@@ -70,10 +70,6 @@ public class FavoritesActivity extends AppCompatActivity {
             case R.id.action_map:
                 intent = new Intent(this, MapsActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.action_settings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

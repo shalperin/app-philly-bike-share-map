@@ -1,10 +1,7 @@
 package com.samhalperin.phillybikesharemap.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -49,7 +46,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (redirectToFavoritesIfSetting()) {return;}
         setContentView(R.layout.activity_maps);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -101,10 +97,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             case R.id.action_favorites:
                 intent = new Intent(this, FavoritesActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.action_settings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -112,7 +104,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         super.onResume();
-        if (redirectToFavoritesIfSetting()) {return;}
         mTracker.setScreenName(SCREEN_NAME);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         mapFragment.getMapAsync(this);
@@ -183,14 +174,4 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             }
         }
     };
-
-    private boolean redirectToFavoritesIfSetting() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getString(getString(R.string.pref_startup_mode), "map").equals("favorites")) {
-            Intent i = new Intent(this, FavoritesActivity.class);
-            startActivity(i);
-            return true;
-        }
-        return false;
-    }
 }
