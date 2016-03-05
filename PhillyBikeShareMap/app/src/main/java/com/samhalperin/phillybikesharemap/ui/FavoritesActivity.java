@@ -14,17 +14,16 @@ import android.widget.Toast;
 import com.samhalperin.phillybikesharemap.data.FavoritesModel;
 import com.samhalperin.phillybikesharemap.data.FavoritesModelDBImpl;
 import com.samhalperin.phillybikesharemap.R;
-import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
+import com.samhalperin.phillybikesharemap.rest.BikeClient;
+import com.samhalperin.phillybikesharemap.rest.Station;
+import com.samhalperin.phillybikesharemap.rest.pojo.BikeData;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.Map;
 
-public class FavoritesActivity extends AppCompatActivity {
+public class FavoritesActivity extends AppCompatActivity implements BikeClient.BikeClientResponseHandler {
 
     ListView lv;
-    private BikeClient.Endpoints api;
+    private BikeClient api;
     FavoritesModel model;
     FavoritesAdapter adapter;
 
@@ -32,20 +31,21 @@ public class FavoritesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
-        api = BikeClient.getApi(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowTitleEnabled(false);
         ab.setIcon(R.mipmap.ab_icon);
-        model = new FavoritesModelDBImpl(this);
-        lv = (ListView)findViewById(R.id.favorites_lv);
-        lv.setEmptyView(findViewById(R.id.empty_view));
-        fetchData();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(null);
 
+        model = new FavoritesModelDBImpl(this);
+        lv = (ListView)findViewById(R.id.favorites_lv);
+        lv.setEmptyView(findViewById(R.id.empty_view));
 
+        api = new BikeClient(this);
+        api.setResponseHandler(this);
+        api.fetch();
     }
 
     @Override
@@ -60,7 +60,8 @@ public class FavoritesActivity extends AppCompatActivity {
         Intent intent;
         switch (id) {
             case R.id.action_refresh:
-                fetchData();
+                findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
+                api.fetch();
                 return true;
             case R.id.action_attribution:
                 intent = new Intent(this, AttributionActivity.class);
@@ -71,35 +72,27 @@ public class FavoritesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void fetchData() {
-        findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
-        Call<BikeData> call = api.getBikeData();
-        call.enqueue(new Callback<BikeData>() {
-            @Override
-            public void onResponse(Call<BikeData> call, Response<BikeData> response) {
-                try {
-                    BikeData data = response.body();
-                    //TODO: is recreating the adapter here really the best approach?
-                    adapter = new FavoritesAdapter(FavoritesActivity.this,
-                            model, data.asMap());
-                    lv.setAdapter(adapter);
-                    findViewById(R.id.loading_view).setVisibility(View.GONE);
-                    findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
-                    bindSwipeListener();
+    @Override
+    public void onBikeApiFetchSuccess(BikeData bikedata) {
+        Map<String, Station> map;
+        try {
+           map = bikedata.asMap();
+        } catch (BikeData.ParseException e) {
+            Toast.makeText(this, "Ooops, sorry! Parse error.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(FavoritesActivity.this, "Ooops, sorry! Parse error.", Toast.LENGTH_LONG).show();
-                    findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
-                }
-            }
+        adapter = new FavoritesAdapter(FavoritesActivity.this,
+                model, map);
+        lv.setAdapter(adapter);
+        findViewById(R.id.loading_view).setVisibility(View.GONE);
+        findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
+        bindSwipeListener();
+    }
 
-            @Override
-            public void onFailure(Call<BikeData> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(FavoritesActivity.this, "Ooops, sorry! Network error", Toast.LENGTH_LONG).show();
-            }
-        });
+    @Override
+    public void onBikeApiFetchFailure(String msg) {
+        Toast.makeText(FavoritesActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 
     //https://github.com/romannurik/Android-SwipeToDismiss/blob/master/src/com/example/android/swipedismiss/MainActivity.java

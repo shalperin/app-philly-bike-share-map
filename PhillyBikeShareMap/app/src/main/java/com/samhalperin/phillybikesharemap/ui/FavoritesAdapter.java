@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.samhalperin.phillybikesharemap.data.FavoritesModel;
 import com.samhalperin.phillybikesharemap.R;
-import com.samhalperin.phillybikesharemap.retrofit.Station;
+import com.samhalperin.phillybikesharemap.rest.Station;
 
 import java.util.Map;
 

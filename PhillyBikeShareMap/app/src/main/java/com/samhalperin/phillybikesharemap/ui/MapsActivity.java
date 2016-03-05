@@ -36,18 +36,17 @@ import com.samhalperin.phillybikesharemap.BikeShareApplication;
 import com.samhalperin.phillybikesharemap.data.FavoritesModel;
 import com.samhalperin.phillybikesharemap.data.FavoritesModelDBImpl;
 import com.samhalperin.phillybikesharemap.R;
-import com.samhalperin.phillybikesharemap.retrofit.Station;
-import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
-import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
+import com.samhalperin.phillybikesharemap.rest.Station;
+import com.samhalperin.phillybikesharemap.rest.BikeClient;
+import com.samhalperin.phillybikesharemap.rest.pojo.BikeData;
 
+import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMarkerClickListener
+        GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMarkerClickListener,
+        BikeClient.BikeClientResponseHandler
 {
     private static final String TAG = "MapsActivity";
     private static final int PERMISSION_RQ_CODE = 1;
@@ -59,7 +58,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ClusterManager<Station> mClusterManager;
     private Tracker mTracker;
     private SupportMapFragment mapFragment;
-    private BikeClient.Endpoints api;
+    private BikeClient api;
     private FavoritesModel favoritesModel;
     private GoogleApiClient mGoogleApiClient;
     private StationClusterRenderer clusterRenderer;
@@ -75,7 +74,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowTitleEnabled(false);
         ab.setIcon(R.mipmap.ab_icon);
-        api = BikeClient.getApi(this);
+        api = new BikeClient(this);
+        api.setResponseHandler(this);
+
         model = new FavoritesModelDBImpl(this);
 
         favoritesModel = new FavoritesModelDBImpl(this);
@@ -111,10 +112,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mClusterManager.setRenderer(clusterRenderer);
         }
 
-        fetchData();
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMyLocationButtonClickListener(this);
         mGoogleApiClient.connect();
+        api.fetch();
     }
 
 
@@ -131,7 +132,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent;
         switch (id) {
             case R.id.action_refresh:
-                fetchData();
+                findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
+                api.fetch();
                 return true;
             case R.id.action_attribution:
                 intent = new Intent(this, AttributionActivity.class);
@@ -154,51 +156,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    //// TODO: 3/5/16 refactor this
-    // what I want here is :
-    // client = new RestApiClient
-    // client.setConnectionFailedListener(this)
-    // client.setConnectionListener(this)
-    // client.fetch()
-    // and then
-    // two overrides
-    // @Override onBikeApiClientSuccess
-    // and
-    // @Override onBikeApiClientFailure
-    // coming from an interface.
+    @Override
+    public void onBikeApiFetchSuccess(BikeData bikedata) {
+        List<Station> stations;
+        try {
+            stations = bikedata.asList();
+        } catch (BikeData.ParseException e) {
+            Toast.makeText(MapsActivity.this, "Ooops! parse error.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
-    private void fetchData() {
-        findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
-        Call<BikeData> call = api.getBikeData();
-        call.enqueue(new Callback<BikeData>() {
-            @Override
-            public void onResponse(Call<BikeData> call, Response<BikeData> response) {
-                mClusterManager.clearItems();
-                try {
-                    BikeData data = response.body();
-                    Station[] stations = data.asArray();
-                    for(Station station : stations) {
-                        if (mClusterManager != null) {
-                            mClusterManager.addItem(station);
-                        }
-                    }
-                    mClusterManager.cluster();
-                    findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(MapsActivity.this, "Ooops, sorry! Parse error.", Toast.LENGTH_LONG).show();
-                }
-
+        mClusterManager.clearItems();
+        for(Station station : stations) {
+            if (mClusterManager != null) {
+                mClusterManager.addItem(station);
             }
-
-            @Override
-            public void onFailure(Call<BikeData> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(MapsActivity.this, "Ooops, sorry! Network error", Toast.LENGTH_LONG).show();
-                findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
-            }
-        });
+        }
+        mClusterManager.cluster();
+        findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
     }
+
+    @Override
+    public void onBikeApiFetchFailure(String message) {
+        Toast.makeText(MapsActivity.this, message, Toast.LENGTH_LONG).show();
+        findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
+    }
+
 
     @Override
     public void onInfoWindowClick(Marker m) {

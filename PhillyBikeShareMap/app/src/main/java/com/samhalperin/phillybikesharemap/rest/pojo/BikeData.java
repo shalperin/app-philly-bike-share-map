@@ -1,6 +1,6 @@
 
 
-package com.samhalperin.phillybikesharemap.retrofit.pojo;
+package com.samhalperin.phillybikesharemap.rest.pojo;
 
 import android.util.Log;
 
@@ -14,7 +14,7 @@ import javax.annotation.Generated;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.samhalperin.phillybikesharemap.retrofit.Station;
+import com.samhalperin.phillybikesharemap.rest.Station;
 
 
 @Generated("org.jsonschema2pojo")
@@ -41,12 +41,7 @@ public class BikeData {
         this.features = features;
     }
 
-    public Station[] asArray() {
-        List<Station> S = asList();
-        return S.toArray(new Station[S.size()]);
-    }
-
-    public List<Station> asList() {
+    public List<Station> asList() throws ParseException {
 
         List<Station> S = new ArrayList<Station>();
         StringBuilder log = new StringBuilder().append("empty log");
@@ -83,12 +78,12 @@ public class BikeData {
             }
         } catch (Exception e) {
             Log.e(TAG, log.toString());
-            e.printStackTrace();
+            throw new ParseException("Ooops! Parse Error.");
         }
         return S;
     }
 
-    public Map<String, Station> asMap() {
+    public Map<String, Station> asMap() throws ParseException {
         List<Station> S = asList();
 
         HashMap<String, Station> map = new HashMap<String, Station>();
@@ -98,4 +93,9 @@ public class BikeData {
         return map;
     }
 
+    public class ParseException extends Exception {
+        public ParseException(String msg) {
+            super(msg);
+        }
+    }
 }

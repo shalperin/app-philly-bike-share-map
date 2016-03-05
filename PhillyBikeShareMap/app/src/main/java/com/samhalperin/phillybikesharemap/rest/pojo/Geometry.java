@@ -1,4 +1,4 @@
-package com.samhalperin.phillybikesharemap.retrofit.pojo;
+package com.samhalperin.phillybikesharemap.rest.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

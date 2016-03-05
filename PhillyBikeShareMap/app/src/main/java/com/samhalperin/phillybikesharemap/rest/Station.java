@@ -1,4 +1,4 @@
-package com.samhalperin.phillybikesharemap.retrofit;
+package com.samhalperin.phillybikesharemap.rest;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
