@@ -86,6 +86,7 @@ public class FavoritesActivity extends AppCompatActivity {
                     adapter = new FavoritesAdapter(FavoritesActivity.this,
                             model, data.asMap());
                     lv.setAdapter(adapter);
+                    findViewById(R.id.loading_view).setVisibility(View.GONE);
                     findViewById(R.id.toolbar_progress_bar).setVisibility(View.INVISIBLE);
                     bindSwipeListener();
 
