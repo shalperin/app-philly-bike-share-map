@@ -236,12 +236,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         * encapsulating the calls that use this logic here so at least it will only be broken
         * in one place if something changes in the future.
         * */
-        if (m.getTitle() == null) {
-            // this might be a cluster.
-            return true;
-        } else {
-            return false;
-        }
+        return m.getTitle() == null;
     }
 
     @Override
