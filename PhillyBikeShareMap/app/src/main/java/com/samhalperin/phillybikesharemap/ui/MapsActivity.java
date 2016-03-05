@@ -64,6 +64,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
         BikeShareApplication application = (BikeShareApplication) getApplication();
         mTracker = application.getDefaultTracker();
 
@@ -78,6 +79,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         mMap.setInfoWindowAdapter(new MyInfoWindowAdapter(this));
         mMap.setOnInfoWindowClickListener(infoWindowClickListener);
         setUpClusterer();
+        fetchData();
         mMap.setOnMarkerClickListener(onMarkerClickListener);
     }
 
@@ -119,12 +121,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
     private void setUpClusterer() {
-        mClusterManager = new ClusterManager<>(this, mMap);
-        mMap.setOnCameraChangeListener(mClusterManager);
-        mMap.setOnMarkerClickListener(mClusterManager);
-        clusterRenderer = new StationClusterRenderer(this, mMap, mClusterManager);
-        mClusterManager.setRenderer(clusterRenderer);
-        fetchData();
+        if (mClusterManager == null) {
+            mClusterManager = new ClusterManager<>(this, mMap);
+            mMap.setOnCameraChangeListener(mClusterManager);
+            mMap.setOnMarkerClickListener(mClusterManager);
+            clusterRenderer = new StationClusterRenderer(this, mMap, mClusterManager);
+            mClusterManager.setRenderer(clusterRenderer);
+        }
     }
 
     @Override
@@ -133,15 +136,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
 
     private void fetchData() {
-        if (mClusterManager == null) {
-            return;
-        }
-        mClusterManager.clearItems();
         findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
         Call<BikeData> call = api.getBikeData();
         call.enqueue(new Callback<BikeData>() {
             @Override
             public void onResponse(Call<BikeData> call, Response<BikeData> response) {
+                mClusterManager.clearItems();
                 try {
                     BikeData data = response.body();
                     Station[] stations = data.asArray();
@@ -195,7 +195,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             if (isMarkerCluster(marker)) {
                 float newZoom = mMap.getCameraPosition().zoom + ZOOM_IN_BY_ON_CLUSTER_CLICK ;
                 LatLng newCenter= marker.getPosition();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newCenter,newZoom ));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(newCenter,newZoom ));
                 return true;
             } else {
                 return false;
