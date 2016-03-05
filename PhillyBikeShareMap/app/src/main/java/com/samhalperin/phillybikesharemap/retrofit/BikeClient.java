@@ -33,24 +33,6 @@ public class BikeClient {
     private static final int READ_TIMEOUT = 120;
     private static final int CONNECT_TIMEOUT = 120;
 
-    // override cache control header and set max-age to x seconds
-    // this handles the use case where the user is switching
-    // rapidly between favorites and the map.
-    // seems like a reasonabl compromise btwn
-    // fresh data versus just hitting the network
-    // over and over again.
-    /*
-    I don't believe this to be working.
-    public static class CachingControlInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Response response = chain.proceed(chain.request());
-
-            return response.newBuilder()
-                    .header("Cache-Control", "public, max-age="+CACHE_AGE)
-                    .header("Pragma", "")
-                    .build();
-        }
     }
     */
     public static Endpoints getApi(Context context) {
