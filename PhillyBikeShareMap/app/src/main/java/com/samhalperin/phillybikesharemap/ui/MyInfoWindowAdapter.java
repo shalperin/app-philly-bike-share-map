@@ -1,12 +1,8 @@
 package com.samhalperin.phillybikesharemap.ui;
 
-import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -16,10 +12,10 @@ import com.samhalperin.phillybikesharemap.R;
  * Created by sqh on 3/3/16.
  */
 public class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-    Activity context;
+    MapsActivity context;
     private static final String TAG = "MyInfoWindowAdapter";
 
-    public MyInfoWindowAdapter(Activity context) {
+    public MyInfoWindowAdapter(MapsActivity context) {
         this.context = context;
     }
 
@@ -30,7 +26,15 @@ public class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
             return null;
         }
         LayoutInflater inflater = context.getLayoutInflater();
-        View view = inflater.inflate(R.layout.info_window, null, false);
+
+        // This is a hack to support basic interactivity on the info window
+        View view;
+        if (context.isMarkerFavorite(marker)) {
+            view = inflater.inflate(R.layout.info_window_favorite, null, false);
+        } else {
+            view = inflater.inflate(R.layout.info_window, null, false);
+        }
+
         TextView snippet = (TextView)view.findViewById(R.id.snippet);
         snippet.setText(marker.getSnippet());
         TextView title = (TextView)view.findViewById(R.id.title);

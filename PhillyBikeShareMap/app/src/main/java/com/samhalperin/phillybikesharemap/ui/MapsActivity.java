@@ -28,6 +28,8 @@ import com.samhalperin.phillybikesharemap.retrofit.Station;
 import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
 import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +44,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     private BikeClient.Endpoints api;
     private FavoritesModel favoritesModel;
     StationClusterRenderer clusterRenderer;
+    FavoritesModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         ab.setDisplayShowTitleEnabled(false);
         ab.setIcon(R.mipmap.ab_icon);
         api = BikeClient.getApi();
+        model = new FavoritesModelDBImpl(this);
 
         favoritesModel = new FavoritesModelDBImpl(this);
 
@@ -167,11 +171,18 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             String id =clusterRenderer.getMarkerIdMap().get(m.getId());
             if (favoritesModel.hasKioskId(id)) {
                 favoritesModel.deleteKioskId(id);
-                Toast.makeText(MapsActivity.this, m.getTitle() + " removed from favorites.", Toast.LENGTH_LONG).show();
+                //Toast.makeText(MapsActivity.this, m.getTitle() + " removed from favorites.", Toast.LENGTH_LONG).show();
             } else {
                 favoritesModel.addKioskId(id);
-                Toast.makeText(MapsActivity.this, m.getTitle() + " favorited!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(MapsActivity.this, m.getTitle() + " favorited!", Toast.LENGTH_LONG).show();
             }
+            m.showInfoWindow();
         }
     };
+
+
+    public boolean isMarkerFavorite(Marker marker) {
+        String kioskId = clusterRenderer.getMarkerIdMap().get(marker.getId());
+        return model.hasKioskId(kioskId);
+    }
 }
