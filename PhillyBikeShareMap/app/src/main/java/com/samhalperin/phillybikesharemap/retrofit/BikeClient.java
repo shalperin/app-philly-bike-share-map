@@ -5,6 +5,9 @@ import com.google.gson.GsonBuilder;
 import com.samhalperin.phillybikesharemap.BikeShareApplication;
 import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -17,12 +20,18 @@ public class BikeClient {
     private static final String TAG = "BikeClient";
 
     public static Endpoints getApi() {
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(120, TimeUnit.SECONDS)
+                .build();
+
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BikeShareApplication.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(client)
                 .build();
         return retrofit.create(Endpoints.class);
     }
