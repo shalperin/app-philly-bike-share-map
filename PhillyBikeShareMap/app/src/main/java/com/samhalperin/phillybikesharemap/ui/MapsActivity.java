@@ -17,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.samhalperin.phillybikesharemap.BikeShareApplication;
@@ -45,6 +46,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     private FavoritesModel favoritesModel;
     StationClusterRenderer clusterRenderer;
     FavoritesModel model;
+    private static final int ZOOM_IN_BY_ON_CLUSTER_CLICK = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         mMap.setInfoWindowAdapter(new MyInfoWindowAdapter(this));
         mMap.setOnInfoWindowClickListener(infoWindowClickListener);
         setUpClusterer();
+        mMap.setOnMarkerClickListener(onMarkerClickListener);
     }
 
 
@@ -184,5 +187,31 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     public boolean isMarkerFavorite(Marker marker) {
         String kioskId = clusterRenderer.getMarkerIdMap().get(marker.getId());
         return model.hasKioskId(kioskId);
+    }
+
+    private GoogleMap.OnMarkerClickListener onMarkerClickListener = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            if (isMarkerCluster(marker)) {
+                float newZoom = mMap.getCameraPosition().zoom + ZOOM_IN_BY_ON_CLUSTER_CLICK ;
+                LatLng newCenter= marker.getPosition();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newCenter,newZoom ));
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
+
+    public boolean isMarkerCluster(Marker m) {
+        //TODO WARNING: This is a pretty hacky way
+        //of determining if a marker is a cluster, and we
+        //call it in a couple of places.
+        if (m.getTitle() == null) {
+            // this might be a cluster.
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -21,8 +21,7 @@ public class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     @Override
     public View getInfoWindow(Marker marker) {
-        if (marker.getTitle() == null) {
-            // this might be a cluster.
+        if (context.isMarkerCluster(marker)) {  // see note on this fn declaration.
             return null;
         }
         LayoutInflater inflater = context.getLayoutInflater();
