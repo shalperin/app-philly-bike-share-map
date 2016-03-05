@@ -57,7 +57,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowTitleEnabled(false);
         ab.setIcon(R.mipmap.ab_icon);
-        api = BikeClient.getApi();
+        api = BikeClient.getApi(this);
         model = new FavoritesModelDBImpl(this);
 
         favoritesModel = new FavoritesModelDBImpl(this);
