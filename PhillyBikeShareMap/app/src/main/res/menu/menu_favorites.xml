@@ -1,8 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_map" android:title="@string/map"
-        android:orderInCategory="100" app:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_refresh"
         android:orderInCategory="100" app:showAsAction="ifRoom" android:icon="@drawable/refresh"/>
     <item android:id="@+id/action_attribution" android:title="@string/attribution"

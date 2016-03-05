@@ -48,7 +48,7 @@
         <TextView android:id="@+id/empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="You don't have any favorites. Star something on the map!"
+            android:text="You don't have any favorites. Heart something on the map!"
             android:padding="30dp"/>
 
     </FrameLayout>

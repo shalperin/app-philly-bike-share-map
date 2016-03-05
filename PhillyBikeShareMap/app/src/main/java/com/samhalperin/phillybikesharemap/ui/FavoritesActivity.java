@@ -67,9 +67,7 @@ public class FavoritesActivity extends AppCompatActivity {
                 intent = new Intent(this, AttributionActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.action_map:
-                intent = new Intent(this, MapsActivity.class);
-                startActivity(intent);
+
         }
         return super.onOptionsItemSelected(item);
     }
