@@ -20,10 +20,7 @@ android {
     }
     apply plugin: 'com.google.gms.google-services'
 
-    //TODO if I really wanted to do this right I'd figure out an ARM build variant.
-    packagingOptions {
-        exclude "lib/arm64-v8a/librealm-jni.so"
-    }
+    
 }
 
 dependencies {
