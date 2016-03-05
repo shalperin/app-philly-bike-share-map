@@ -23,13 +23,10 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.samhalperin.phillybikesharemap.BikeShareApplication;
 import com.samhalperin.phillybikesharemap.data.FavoritesModel;
 import com.samhalperin.phillybikesharemap.data.FavoritesModelDBImpl;
-import com.samhalperin.phillybikesharemap.data.FavoritesModelmpl;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.Station;
 import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
 import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
-
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -130,11 +127,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     private void fetchData() {
         findViewById(R.id.toolbar_progress_bar).setVisibility(View.VISIBLE);
         Call<BikeData> call = api.getBikeData();
@@ -204,9 +196,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     };
 
     public boolean isMarkerCluster(Marker m) {
-        //TODO WARNING: This is a pretty hacky way
-        //of determining if a marker is a cluster, and we
-        //call it in a couple of places.
+        /* TODO WARNING: This is a pretty hacky way of determining if a marker is a cluster,
+        and we call it in a couple of places. */
         if (m.getTitle() == null) {
             // this might be a cluster.
             return true;

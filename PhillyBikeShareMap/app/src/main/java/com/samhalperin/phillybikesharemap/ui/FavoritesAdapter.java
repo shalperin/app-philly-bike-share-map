@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.samhalperin.phillybikesharemap.data.FavoritesModel;
-import com.samhalperin.phillybikesharemap.data.FavoritesModelmpl;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.Station;
 

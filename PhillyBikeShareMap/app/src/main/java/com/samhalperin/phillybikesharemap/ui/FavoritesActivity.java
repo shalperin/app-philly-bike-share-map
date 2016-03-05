@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.samhalperin.phillybikesharemap.data.FavoritesModel;
 import com.samhalperin.phillybikesharemap.data.FavoritesModelDBImpl;
-import com.samhalperin.phillybikesharemap.data.FavoritesModelmpl;
 import com.samhalperin.phillybikesharemap.R;
 import com.samhalperin.phillybikesharemap.retrofit.BikeClient;
 import com.samhalperin.phillybikesharemap.retrofit.pojo.BikeData;
@@ -80,9 +79,7 @@ public class FavoritesActivity extends AppCompatActivity {
             public void onResponse(Call<BikeData> call, Response<BikeData> response) {
                 try {
                     BikeData data = response.body();
-                    // I am conflicted about blowing away the adapter here and recreating
-                    // it, but I definitely don't want to init it with null for the Stations
-                    // Map.
+                    //TODO: is recreating the adapter here really the best approach?
                     adapter = new FavoritesAdapter(FavoritesActivity.this,
                             model, data.asMap());
                     lv.setAdapter(adapter);
