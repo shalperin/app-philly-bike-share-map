@@ -228,9 +228,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             if (mLastLocation != null) {
+                float bearing = mMap.getCameraPosition().bearing;
                 CameraPosition newCameraPosition = new CameraPosition(
                         new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),
-                        BikeShareApplication.STREET_LEVEL_ZOOM, 0, mLastLocation.getBearing());
+                        BikeShareApplication.STREET_LEVEL_ZOOM, 0, bearing);
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition));
             } else {
                 Log.e(TAG, "location was null");
