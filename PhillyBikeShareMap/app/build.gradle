@@ -7,8 +7,8 @@ android {
         applicationId 'com.samhalperin.phillybikesharemap'
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 9
-        versionName "2.0-alpha"
+        versionCode 10
+        versionName "2.0-alpha2"
     }
     buildTypes {
         release {
