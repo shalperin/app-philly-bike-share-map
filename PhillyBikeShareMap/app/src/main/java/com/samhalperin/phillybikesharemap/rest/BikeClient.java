@@ -26,8 +26,6 @@ import retrofit2.http.GET;
 public class BikeClient {
     private static final String TAG = "BikeClient";
     private static final int CACHE_SIZE =10 * 1024 * 1024; // 10 MiB
-    private static final int READ_TIMEOUT = 120;
-    private static final int CONNECT_TIMEOUT = 120;
     private BikeClientResponseHandler handler;
     private Context context;
 
@@ -71,8 +69,6 @@ public class BikeClient {
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .cache(cache)
                 //[DEBUGGING].addInterceptor(logging)
                 .build();
