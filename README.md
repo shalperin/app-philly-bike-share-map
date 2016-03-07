@@ -16,6 +16,10 @@ Origin: I have an android phone, and use Philly Bike Share to get around town.  
 *Please email sam@samhalperin.com if you have any trouble with the above links!*
 
 #Release Notes
+
+###New in version 10 (2.0-alpha2)
++ Bug fixes for my location
+
 ###New in version 9 (2.0-alpha1)
 New Features:
 + Favorite a kiosk, and view a quick list view of favorites
