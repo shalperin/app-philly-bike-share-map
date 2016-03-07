@@ -6,8 +6,8 @@ Origin: I have an android phone, and use Philly Bike Share to get around town.  
 [![Google Play](readme-assets/google_play.png?raw=true)](https://play.google.com/store/apps/details?id=com.samhalperin.phillybikesharemap)
 
 
-# Help us Alpha/Beta test new features in the app!
-**This is a big part of helping us release new features to the app while keeping it robust and stable.  You are doing us a big favor by participating, and it's one way you can help support the app!**
+# Help us test new features in the app, sign up to be an alpha/beta tester.
+**This is a big part of helping us release new features to the app while keeping it robust and stable. You also get early access to new features.  You are doing us a big favor by participating, and it's one way you can help support the app!**
 
 
 + [Google group for testers.](https://groups.google.com/forum/#!forum/philly-bike-share-map-alphabeta-testers)
