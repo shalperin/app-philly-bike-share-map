@@ -114,7 +114,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMyLocationButtonClickListener(this);
-        mGoogleApiClient.connect();
+        //mGoogleApiClient.connect();
         api.fetch();
     }
 
@@ -152,7 +152,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mTracker.setScreenName(SCREEN_NAME);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         mapFragment.getMapAsync(this);
-        mGoogleApiClient.connect();
+        mGoogleApiClient.reconnect();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(
+                    mGoogleApiClient, this);
+        }
     }
 
 
@@ -256,9 +265,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(Bundle bundle) {
-        String permission = Manifest.permission.ACCESS_FINE_LOCATION;
         if (ContextCompat.checkSelfPermission(MapsActivity.this,
-                permission)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
 
             //register for location updates.
@@ -271,7 +279,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         } else {
             ActivityCompat.requestPermissions(MapsActivity.this,
-                    new String[]{permission},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSION_RQ_CODE);
         }
     }
@@ -300,12 +308,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(
-                    mGoogleApiClient, this);
-        }
-    }
+
 }
