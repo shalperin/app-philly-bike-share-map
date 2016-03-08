@@ -17,6 +17,9 @@ Origin: I have an android phone, and use Philly Bike Share to get around town.  
 
 #Release Notes
 
+###New in version 11 (2.0-alpha3) 
++ Fail faster on no-network-connection
+
 ###New in version 10 (2.0-alpha2)
 + Bug fixes for my location
 
