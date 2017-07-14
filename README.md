@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/50740997.svg)](https://zenodo.org/badge/latestdoi/50740997)
+
 # Bike Share Philly Map
 ![Bike Share App](readme-assets/bikeshare.png?raw=true)
 
