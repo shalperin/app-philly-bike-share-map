@@ -1,19 +1,9 @@
-#Bike Share Philly Map
-Origin: I have an android phone, and use Philly Bike Share to get around town.  Necessity is the mother of invention!
+# Bike Share Philly Map
 ![Bike Share App](readme-assets/bikeshare.png?raw=true)
 
 
 [![Google Play](readme-assets/google_play.png?raw=true)](https://play.google.com/store/apps/details?id=com.samhalperin.phillybikesharemap)
 
-
-# Help us test new features in the app, sign up to be an alpha/beta tester.
-**This is a big part of helping us release new features to the app while keeping it robust and stable. You also get early access to new features.  You are doing us a big favor by participating, and it's one way you can help support the app!**
-
-
-+ [Google group for testers.](https://groups.google.com/forum/#!forum/philly-bike-share-map-alphabeta-testers)
-+ [Link to sign up to be a tester if you've already got the app.](https://play.google.com/apps/testing/com.samhalperin.phillybikesharemap)
-
-*Please email sam@samhalperin.com if you have any trouble with the above links!*
 
 #Release Notes
 
