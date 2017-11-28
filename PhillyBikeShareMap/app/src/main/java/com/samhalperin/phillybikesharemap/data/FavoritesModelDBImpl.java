@@ -19,8 +19,8 @@ public class FavoritesModelDBImpl implements FavoritesModel{
     private RealmConfiguration realmConfig;
 
     public FavoritesModelDBImpl(Context context) {
-        realmConfig = new RealmConfiguration.Builder(context).build();
-        realm = Realm.getInstance(realmConfig);
+        Realm.init(context);
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class FavoritesModelDBImpl implements FavoritesModel{
     public void deleteKioskId(String id) {
         realm.beginTransaction();
         FavoriteItem item = realm.where(FavoriteItem.class).equalTo(FavoriteItem.ID_FIELD_NAME, id).findFirst();
-        item.removeFromRealm();
+        item.deleteFromRealm();
         realm.commitTransaction();
     }
 
